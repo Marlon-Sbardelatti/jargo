@@ -12,6 +12,7 @@ use std::path::PathBuf;
 use std::process::Command;
 mod creation;
 use creation::*;
+mod templates;
 
 fn main() -> std::io::Result<()> {
     let args: Vec<String> = env::args().collect();
