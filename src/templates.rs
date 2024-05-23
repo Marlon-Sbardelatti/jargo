@@ -9,4 +9,15 @@ impl Templates {
 }"#
         .to_string()
     }
+
+    pub fn generate_class(classname: &String) -> String {
+        let class = format!(
+            r#"public class {} {{
+
+    
+}}"#,
+            classname
+        );
+        class
+    }
 }

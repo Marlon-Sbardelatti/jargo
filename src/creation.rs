@@ -1,15 +1,14 @@
+use crate::templates;
+use crate::templates::Templates;
 use std::env;
 use std::fs;
 use std::io;
 use std::io::Write;
-use crate::templates;
-use crate::templates::Templates;
 
 #[derive(Debug)]
 pub struct CreationController;
 
 impl CreationController {
-
     pub fn create_root_dir(new_dir: &String) -> Result<(), io::Error> {
         match fs::create_dir(new_dir) {
             Ok(_dir) => {
@@ -69,9 +68,9 @@ impl CreationController {
             match fs::File::create(path) {
                 Ok(mut file) => {
                     file.write_all(Templates::generate_main().as_bytes())?;
-                    
+
                     file.flush()?;
-                    
+
                     // println!("{} file was created", file);
 
                     return Ok(dir.to_string());
@@ -92,6 +91,33 @@ impl CreationController {
         Err(io::Error::new(
             io::ErrorKind::Other,
             "Could not create the project",
+        ))
+    }
+
+    pub fn create_class(classname: &String) -> Result<(), io::Error> {
+        match env::current_dir() {
+            Ok(path) => {
+                if path.join("src").exists() {
+                    let classpath =
+                        format!("{}/{}.java", path.join("src").to_string_lossy(), classname);
+                    match fs::File::create_new(classpath) {
+                        Ok(mut file) => {
+                            file.write_all(Templates::generate_class(classname).as_bytes())?;
+
+                            file.flush()?;
+
+                            return Ok(());
+                        }
+                        Err(e) =>return Err(io::Error::new(io::ErrorKind::Other, format!("Could not create class, a class with this name already exists.\nerror: {e}"))),
+                    }
+                }
+            }
+            Err(e) => println!("error: {}", e),
+        }
+
+        Err(io::Error::new(
+            io::ErrorKind::Other,
+            "Could not create class",
         ))
     }
 }
