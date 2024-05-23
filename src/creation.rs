@@ -9,42 +9,6 @@ use crate::templates::Templates;
 pub struct CreationController;
 
 impl CreationController {
-    pub fn find_toml() -> Result<(), io::Error> {
-        match env::current_dir() {
-            Ok(path) => match path.file_name() {
-                Some(dir) => {
-                    match fs::read_dir(path) {
-                        Ok(files) => {
-                            for f in files {
-                                match f {
-                                    Ok(file) => {
-                                        let path = file.path();
-                                        if let Some(file_name) = path.file_name() {
-                                            if file_name == "Jargo.toml" {
-                                                println!("Filename: {:?}", file_name);
-                                                return Ok(());
-                                            }
-                                        }
-                                    }
-                                    Err(_) => todo!(),
-                                }
-                            }
-                        }
-                        Err(_) => todo!(),
-                    }
-                    // println!("The current directory name is {:?}", dir)
-                }
-                None => println!("Could not determine the directory name."),
-            },
-            Err(e) => {
-                println!("Error getting current directory: {}", e);
-            }
-        }
-        Err(io::Error::new(
-            io::ErrorKind::Other,
-            "Could not find Jargo.toml file. Make sure you are in the right directory",
-        ))
-    }
 
     pub fn create_root_dir(new_dir: &String) -> Result<(), io::Error> {
         match fs::create_dir(new_dir) {

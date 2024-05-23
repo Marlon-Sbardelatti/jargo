@@ -12,7 +12,9 @@ use std::path::PathBuf;
 use std::process::Command;
 mod creation;
 use creation::*;
+mod operations;
 mod templates;
+use operations::*;
 
 fn main() -> std::io::Result<()> {
     let args: Vec<String> = env::args().collect();
@@ -20,8 +22,11 @@ fn main() -> std::io::Result<()> {
     let flag = &args[1];
 
     if flag == "run" {
-        match CreationController::find_toml() {
-            Ok(_) => println!("success"),
+        match OperationController::find_toml() {
+            Ok(root_path) => match OperationController::compile(root_path) {
+                Ok(_) => {},
+                Err(e) => println!("error: {}", e),
+            },
             Err(e) => println!("error: {}", e),
         }
     } else if flag == "new" {
@@ -46,11 +51,10 @@ fn main() -> std::io::Result<()> {
             },
             Err(e) => println!("error: {}", e),
         };
-    }
-    // if flag == "-g" || flag == "--get" {
-    //     let get_name = &args[2];
-    //     let file = File::open("/home/hetzwga/.config/tstyle/themes.txt")?;
-    //     let reader = BufReader::new(file);
+    } // if flag == "-g" || flag == "--get" {
+      //     let get_name = &args[2];
+      //     let file = File::open("/home/hetzwga/.config/tstyle/themes.txt")?;
+      //     let reader = BufReader::new(file);
 
     //     let mut vec: Vec<String> = Vec::new();
     //     for line in reader.lines() {
