@@ -21,15 +21,22 @@ fn main() -> std::io::Result<()> {
 
     let flag = &args[1];
 
-    if flag == "run" {
-        match OperationController::find_toml() {
-            Ok(root_path) => match OperationController::compile(root_path) {
-                Ok(_) => {},
+    if flag == "run" || flag == "r"{
+        // match OperationController::find_toml() {
+        //     Ok(root_path) => match OperationController::compile(root_path) {
+        //         Ok(_) => {}
+        //         Err(e) => println!("error: {}", e),
+        //     },
+        //     Err(e) => println!("error: {}", e),
+        // }
+        match OperationController::find() {
+            Ok(path) => match OperationController::compile(path) {
+                Ok(_) => {}
                 Err(e) => println!("error: {}", e),
             },
             Err(e) => println!("error: {}", e),
         }
-    } else if flag == "new" {
+    } else if flag == "new" || flag == "n" {
         let new_dir = &args[2];
 
         match CreationController::create_root_dir(new_dir) {
@@ -51,14 +58,29 @@ fn main() -> std::io::Result<()> {
             },
             Err(e) => println!("error: {}", e),
         };
-    } else if flag == "create" {
+    } else if flag == "create" || flag == "c"{
         let classname = &args[2];
         match CreationController::create_class(classname) {
             Ok(_) => println!("Class {} created!", classname),
             Err(e) => println!("{}", e),
-        } 
+        }
+    } else if flag == "jrun" || flag == "j" {
+        match OperationController::find() {
+            Ok(path) => {
+                let out_path = path.clone().join("out");
+                match OperationController::run(out_path) {
+                    Ok(_) => {}
+                    Err(e) => println!("error: {}", e),
+                }
+            }
+            Err(e) => println!("error: {}", e),
+        }
+    }else if flag == "help" || flag == "h"{
+       println!("help or h:  lists all commands");
+        println!("new or n: creates a new java project");
+        println!("run or r: compiles and run your java project");
+        println!("create or c: creates a new class in your java project");
+        println!("jrun or j: just run the lastest compiled version of your project" );
     }
-
     Ok(())
 }
-

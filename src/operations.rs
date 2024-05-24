@@ -13,6 +13,7 @@ impl OperationController {
                 Some(dir) => {
                     match fs::read_dir(root_path.clone()) {
                         Ok(files) => {
+                            println!("{:?}", root_path);
                             for f in files {
                                 match f {
                                     Ok(file) => {
@@ -60,7 +61,7 @@ impl OperationController {
                 .expect("Failed to execute javac");
 
             if status.success() {
-                match Self::run() {
+                match Self::run(out_path) {
                     Ok(_) => {
                         return Ok(());
                     }
@@ -81,11 +82,12 @@ impl OperationController {
         ))
     }
 
-    pub fn run() -> Result<(), io::Error> {
+    pub fn run(out_path: PathBuf) -> Result<(), io::Error> {
         let status = Command::new("sh")
             .arg("-c")
             .arg(format!(
-                "java -classpath out/ Main",
+                "java -classpath {} Main",
+                out_path.to_string_lossy()
             ))
             .status()
             .expect("Failed to execute java command");
@@ -98,6 +100,36 @@ impl OperationController {
                 io::ErrorKind::Other,
                 "Could not run the files",
             ));
+        }
+    }
+
+    pub fn find() -> Result<PathBuf, io::Error> {
+        match env::current_dir() {
+            Ok(root_path) => match Self::look_for_src(root_path) {
+                Ok(src_path) => return Ok(src_path),
+                Err(e) => {
+                    return Err(io::Error::new(
+                        io::ErrorKind::Other,
+                        format!("Unable to locate src directory\nerror: {}", e),
+                    ))
+                }
+            },
+            Err(e) => return Err(e),
+        }
+        // Err(io::Error::new(
+        //     io::ErrorKind::Other,
+        //     "Could not run the files",
+        // ))
+    }
+
+    pub fn look_for_src(mut path: PathBuf) -> Result<PathBuf, io::Error> {
+        if path.join("src").exists() {
+            return Ok(path.to_path_buf());
+        } else {
+            while path.join("src").exists() == false {
+                path = PathBuf::from(path.parent().unwrap());
+            }
+            return Ok(path.to_path_buf());
         }
     }
 }
