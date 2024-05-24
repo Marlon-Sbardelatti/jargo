@@ -50,7 +50,7 @@ fn main() -> std::io::Result<()> {
                         Some(&"Main.java".to_string()),
                     ) {
                         Ok(_path) => {
-                            println!("Created new application `{}`", new_dir);
+                            println!("{} `{}`","Created new application".green().bold(), new_dir.cyan());
                         }
                         Err(e) => println!("error: {}", e),
                     }
@@ -62,7 +62,7 @@ fn main() -> std::io::Result<()> {
     } else if flag == "create" || flag == "c" {
         let classname = &args[2];
         match CreationController::create_class(classname) {
-            Ok(_) => println!("Class {} created!", classname),
+            Ok(_) => println!("{} `{}`","Created class:".green().bold(), classname.cyan()),
             Err(e) => println!("{}", e),
         }
     } else if flag == "jrun" || flag == "j" {
