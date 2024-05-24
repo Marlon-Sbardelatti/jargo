@@ -63,7 +63,7 @@ impl OperationController {
                 .expect("Failed to execute javac");
 
             if status.success() {
-                println!("{}\n", "java project compiled successfully".green().bold());
+                println!("{}\n", "java project compiled successfully!".green().bold());
                 match Self::run(out_path) {
                     Ok(_) => {
                         return Ok(());
