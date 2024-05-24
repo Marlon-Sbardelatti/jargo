@@ -4,6 +4,8 @@ use std::io;
 use std::path::PathBuf;
 use std::process::Command;
 
+use colored::Colorize;
+
 pub struct OperationController;
 
 impl OperationController {
@@ -61,6 +63,7 @@ impl OperationController {
                 .expect("Failed to execute javac");
 
             if status.success() {
+                println!("{}\n", "java project compiled successfully".green().bold());
                 match Self::run(out_path) {
                     Ok(_) => {
                         return Ok(());
@@ -93,9 +96,10 @@ impl OperationController {
             .expect("Failed to execute java command");
 
         if status.success() {
+            // println!("{}", "success!\n".green());
             return Ok(());
         } else {
-            println!("Compilation failed");
+            println!("{}", "Compilation failed".red().bold());
             return Err(io::Error::new(
                 io::ErrorKind::Other,
                 "Could not run the files",

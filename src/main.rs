@@ -1,4 +1,5 @@
 use std::env;
+use colored::*;
 use std::fmt::format;
 use std::fs;
 use std::fs::create_dir_all;
@@ -21,7 +22,7 @@ fn main() -> std::io::Result<()> {
 
     let flag = &args[1];
 
-    if flag == "run" || flag == "r"{
+    if flag == "run" || flag == "r" {
         // match OperationController::find_toml() {
         //     Ok(root_path) => match OperationController::compile(root_path) {
         //         Ok(_) => {}
@@ -58,7 +59,7 @@ fn main() -> std::io::Result<()> {
             },
             Err(e) => println!("error: {}", e),
         };
-    } else if flag == "create" || flag == "c"{
+    } else if flag == "create" || flag == "c" {
         let classname = &args[2];
         match CreationController::create_class(classname) {
             Ok(_) => println!("Class {} created!", classname),
@@ -75,12 +76,13 @@ fn main() -> std::io::Result<()> {
             }
             Err(e) => println!("error: {}", e),
         }
-    }else if flag == "help" || flag == "h"{
-       println!("help or h:  lists all commands");
+    } else if flag == "help" || flag == "h" {
+        println!("{}","jargo commands!".green());
+        println!("help or h:  lists all commands");
         println!("new or n: creates a new java project");
         println!("run or r: compiles and run your java project");
         println!("create or c: creates a new class in your java project");
-        println!("jrun or j: just run the lastest compiled version of your project" );
+        println!("jrun or j: just run the lastest compiled version of your project");
     }
     Ok(())
 }
