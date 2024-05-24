@@ -1,16 +1,6 @@
 use std::env;
 use colored::*;
-use std::fmt::format;
-use std::fs;
-use std::fs::create_dir_all;
-use std::fs::File;
-use std::fs::OpenOptions;
-use std::io;
-use std::io::prelude::*;
-use std::io::BufReader;
-use std::path::Path;
-use std::path::PathBuf;
-use std::process::Command;
+use templates::Templates;
 mod creation;
 use creation::*;
 mod operations;
@@ -77,12 +67,7 @@ fn main() -> std::io::Result<()> {
             Err(e) => println!("error: {}", e),
         }
     } else if flag == "help" || flag == "h" {
-        println!("{}","jargo commands!".green());
-        println!("help or h:  lists all commands");
-        println!("new or n: creates a new java project");
-        println!("run or r: compiles and run your java project");
-        println!("create or c: creates a new class in your java project");
-        println!("jrun or j: just run the lastest compiled version of your project");
+        Templates::help();
     }
     Ok(())
 }

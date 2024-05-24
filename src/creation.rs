@@ -1,4 +1,3 @@
-use crate::templates;
 use crate::templates::Templates;
 use std::env;
 use std::fs;

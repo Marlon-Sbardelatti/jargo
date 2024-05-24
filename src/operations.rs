@@ -107,6 +107,7 @@ impl OperationController {
         }
     }
 
+    //finds the root dir
     pub fn find() -> Result<PathBuf, io::Error> {
         match env::current_dir() {
             Ok(root_path) => match Self::look_for_src(root_path) {
