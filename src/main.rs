@@ -12,7 +12,7 @@ fn main() -> std::io::Result<()> {
 
     let flag = &args[1];
 
-    if flag == "run" || flag == "r" {
+    if flag == "run" || flag == "r" || flag == "jr" {
         // match OperationController::find_toml() {
         //     Ok(root_path) => match OperationController::compile(root_path) {
         //         Ok(_) => {}
