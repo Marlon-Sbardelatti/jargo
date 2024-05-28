@@ -4,6 +4,7 @@ use std::fs;
 use std::fs::File;
 use std::io;
 use std::io::Write;
+use std::path::PathBuf;
 
 #[derive(Debug)]
 pub struct CreationController;
@@ -100,7 +101,11 @@ impl CreationController {
                 if path.join("src").exists() {
                     let classpath =
                         format!("{}/{}.java", path.join("src").to_string_lossy(), classname);
-                    match File::create(classpath) {
+                    let classpath_but = PathBuf::from(&classpath);
+                    if classpath_but.exists(){
+                        println!("A class with this name already exists");
+                    } else {
+                        match File::create(classpath) {
                         Ok(mut file) => {
                             file.write_all(Templates::generate_class(classname).as_bytes())?;
 
@@ -109,6 +114,7 @@ impl CreationController {
                             return Ok(());
                         }
                         Err(e) =>return Err(io::Error::new(io::ErrorKind::Other, format!("Could not create class, a class with this name already exists.\nerror: {e}"))),
+                    }
                     }
                 }
             }
