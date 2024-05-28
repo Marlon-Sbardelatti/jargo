@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 dirs = "5.0.1"
 colored = "2.1.0"
+read_input = "0.8.6"
