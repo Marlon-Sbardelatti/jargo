@@ -1,6 +1,7 @@
 use crate::templates::Templates;
 use std::env;
 use std::fs;
+use std::fs::File;
 use std::io;
 use std::io::Write;
 
@@ -99,7 +100,7 @@ impl CreationController {
                 if path.join("src").exists() {
                     let classpath =
                         format!("{}/{}.java", path.join("src").to_string_lossy(), classname);
-                    match fs::File::create_new(classpath) {
+                    match File::create(classpath) {
                         Ok(mut file) => {
                             file.write_all(Templates::generate_class(classname).as_bytes())?;
 
