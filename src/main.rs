@@ -69,6 +69,8 @@ fn main() -> std::io::Result<()> {
         }
     } else if flag == "help" || flag == "h" {
         Templates::help();
+    } else {
+        println!("Unknown command")
     }
     Ok(())
 }
