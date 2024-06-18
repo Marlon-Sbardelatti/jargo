@@ -21,7 +21,7 @@ To install Jargo, follow these steps:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/jargo.git
+git clone https://github.com/Marlon-Sbardelatti/jargo.git
 cd jargo
 ```
 2. Build the project using Cargo (Rust's package manager):
