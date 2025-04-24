@@ -10,10 +10,11 @@ pub struct OperationController;
 
 impl OperationController {
     // NOTE: no changes so far (`find_toml` is never used)
+    #[allow(dead_code)]
     pub fn find_toml() -> Result<PathBuf, io::Error> {
         match env::current_dir() {
             Ok(root_path) => match root_path.clone().file_name() {
-                Some(dir) => {
+                Some(_) => {
                     match fs::read_dir(root_path.clone()) {
                         Ok(files) => {
                             println!("{:?}", root_path);
